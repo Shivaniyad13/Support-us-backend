@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BeneficiaryType {
+  PERSON
+  ORGANIZATION
+  PROGRAM
+}
+
+enum DonationStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+}
+
+model Beneficiary {
+  id          String          @id @default(uuid())
+  name        String
+  slug        String          @unique
+  type        BeneficiaryType
+  description String
+  isActive    Boolean         @default(true)
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  donations   Donation[]
+
+  @@index([isActive, sortOrder])
+}
+
+model Donation {
+  id                    String         @id @default(uuid())
+  orderId               String         @unique
+  beneficiaryId         String?
+  beneficiaryName       String
+  beneficiaryType       BeneficiaryType
+  donorName             String?
+  donorEmail            String
+  donorPhone            String
+  amount                Decimal        @db.Decimal(12, 2)
+  currency              String         @default("INR")
+  status                DonationStatus @default(PENDING)
+  isAnonymous           Boolean        @default(false)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  beneficiary           Beneficiary?   @relation(fields: [beneficiaryId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([beneficiaryId, createdAt])
+}
