@@ -1,5 +1,24 @@
 # Support Us backend
 
+## Deploying to Vercel
+
+Set the Vercel project's Root Directory to `backend`. The Express app is exported
+from `src/index.ts`, which Vercel serves as a function. Keep the Build Command
+as `npm run build` and leave the Output Directory empty.
+
+The local `.env` file is not uploaded to Vercel. Add these variables in the
+Vercel project's Environment Variables settings for each environment you deploy:
+
+- `DATABASE_URL`
+- `FRONTEND_ORIGIN` — the exact deployed frontend origin, including `https://`
+- `CASHFREE_ENV` — `sandbox` or `production`
+- `CASHFREE_APP_ID`
+- `CASHFREE_SECRET_KEY`
+- `DONATION_RETURN_URL` — the deployed frontend URL Cashfree should return to
+
+`CASHFREE_API_VERSION` and `ADMIN_API_KEY` are optional. Redeploy after adding or
+changing variables, then verify the backend at `/api/health`.
+
 ## Donation recipients
 
 Configure the active recipients in `src/seed.ts`, then run this from the backend directory:
