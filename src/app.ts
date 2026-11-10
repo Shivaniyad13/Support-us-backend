@@ -169,7 +169,12 @@ app.get("/api/beneficiaries", async (_req, res, next) => {
 const createDonationSchema = z.object({
   beneficiaryId: z.string().uuid(),
   amount: z.number().finite().min(1).max(9999999999.99),
-  donorName: z.string().trim().max(90).optional(),
+  donorName: z
+    .string()
+    .trim()
+    .max(90)
+    .regex(/^[\p{L}\p{M}]+(?:[ .'-][\p{L}\p{M}]+)*$/u, "Enter a valid name using letters only")
+    .optional(),
   donorEmail: z.string().trim().email().max(254),
   donorPhone: z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
   isAnonymous: z.boolean().default(false),
