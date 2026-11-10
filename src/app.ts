@@ -292,3 +292,4 @@ app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   }
   res.status(500).json({ success: false, error: "Unexpected server error." });
 });
+export default app;
