@@ -21,7 +21,7 @@ async function cashfreeRequest<T>(path: string, init: RequestInit): Promise<T> {
       headers: {
         "x-client-id": config.CASHFREE_APP_ID,
         "x-client-secret": config.CASHFREE_SECRET_KEY,
-        "x-api-version": config.CASHFREE_API_VERSION,
+        "x-api-version": config.CASHFREE_API_VERSION || "2023-08-01",
         "Content-Type": "application/json",
         ...init.headers,
       },
@@ -36,6 +36,7 @@ async function cashfreeRequest<T>(path: string, init: RequestInit): Promise<T> {
   } catch (error) {
     throw new CashfreeError("Secure payment service returned an invalid response.", { cause: error });
   }
+
   if (!response.ok) {
     const message =
       typeof data === "object" && data !== null && "message" in data
@@ -54,6 +55,14 @@ export async function createCashfreeOrder(input: {
   beneficiaryName: string;
 }) {
   const orderId = `SUP_${Date.now()}_${randomUUID().replace(/-/g, "").slice(0, 12)}`;
+
+  // Return URL sirf tab bhejo jab config mein set ho (production ke liye).
+  // Local development mein DONATION_RETURN_URL comment/empty rakho, toh
+  // order_meta bhejega hi nahi aur Cashfree ka https wala error nahi aayega.
+  const orderMeta = config.DONATION_RETURN_URL
+    ? { return_url: config.DONATION_RETURN_URL }
+    : undefined;
+
   const result = await cashfreeRequest<{
     order_id: string;
     payment_session_id: string;
@@ -71,9 +80,7 @@ export async function createCashfreeOrder(input: {
         customer_email: input.donorEmail,
         customer_phone: input.donorPhone,
       },
-      order_meta: {
-        return_url: config.DONATION_RETURN_URL,
-      },
+      ...(orderMeta ? { order_meta: orderMeta } : {}),
       order_note: `Donation for ${input.beneficiaryName}`.slice(0, 200),
     }),
   });

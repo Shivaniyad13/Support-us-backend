@@ -15,7 +15,7 @@ const configSchema = z.object({
   CASHFREE_APP_ID: z.string().min(1),
   CASHFREE_SECRET_KEY: z.string().min(1),
   CASHFREE_API_VERSION: z.string().default("2023-08-01"),
-  DONATION_RETURN_URL: z.string().url(),
+  DONATION_RETURN_URL: z.string().url().optional(),
   ADMIN_API_KEY: z.string().min(32).optional(),
 });
 
