@@ -38,3 +38,5 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 ```
 
 Set the generated value as `ADMIN_API_KEY` in the backend `.env` file or the backend hosting provider's secret environment variables. Keep it private, do not add it to the frontend environment, and restart/redeploy the backend after setting it. The admin page is available at `/admin` and stores the entered key only for the current browser session.
+
+fix error 
