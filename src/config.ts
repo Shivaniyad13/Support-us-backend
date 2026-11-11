@@ -7,7 +7,7 @@ const configSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(4001),
   DATABASE_URL: z.string().min(1),
-  FRONTEND_ORIGIN: z.string().url(),
+  FRONTEND_ORIGIN: z.string().url().transform((origin) => origin.replace(/\/+$/, "")),
   CASHFREE_ENV: z.preprocess(
     (value) => (typeof value === "string" ? value.trim().toLowerCase() : value),
     z.enum(["sandbox", "production"]).default("sandbox"),

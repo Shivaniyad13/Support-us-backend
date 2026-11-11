@@ -153,7 +153,7 @@ app.get("/api/admin/donations", async (req, res, next) => {
   }
 });
 
-app.get("/api/beneficiaries", async (_req, res, next) => {
+app.get(["/api/beneficiaries", "/beneficiaries"], async (_req, res, next) => {
   try {
     const beneficiaries = await prisma.beneficiary.findMany({
       where: { isActive: true },
