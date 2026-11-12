@@ -1,5 +1,35 @@
+
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+build/
+.next/
+out/
+
+# Environment variables
 .env
 .env.*
 !.env.example
+
+# Logs
+*.log
+logs/
+
+# Cache and temporary files
+.cache/
+.tmp/
+temp/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Documentation not required in repository
+README.md
