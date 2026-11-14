@@ -178,6 +178,7 @@ const createDonationSchema = z.object({
   donorEmail: z.string().trim().email().max(254),
   donorPhone: z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
   isAnonymous: z.boolean().default(false),
+  privacyConsent: z.literal(true),
 });
 
 app.post("/api/donations/orders", async (req, res, next) => {
